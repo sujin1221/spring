@@ -41,13 +41,15 @@ public class BoardController {
 	//void 처리해도 상관없음!
 	@GetMapping("/list")
 	public String list(Model m, PagingVO pgvo) {
-		log.info(">>> pgvo >> {} ", pgvo);
+		log.info(">>> pgvo >> {} ", pgvo); //pageNo, qty, type, keyword
+		
 		//리턴타입은 목적지 경로에 대한 타입 (destPage가 리턴이라고 생각)
 	    //Model 객체 => setAttribute 역할을 하는 객체
 		m.addAttribute("list", bsv.getList(pgvo));
 		//pagingHandler 객체 다시 생성
 		//pgvo, totalCount
-		int totalCount = bsv.getTotalCount();
+		int totalCount = bsv.getTotalCount(pgvo);
+		log.info("totalCount >>> {} ",totalCount);
 		PagingHandler ph = new PagingHandler(pgvo, totalCount);
 		m.addAttribute("ph", ph);
 		return "/board/list";
@@ -76,7 +78,5 @@ public class BoardController {
 	//일회성으로 데이터를 보낼때 사용 => addFlashAttribute
 	re.addFlashAttribute("isDel",isOk);
 	return "redirect:/board/list"; 
-	}
-	
-	
+	}	
 }
