@@ -35,6 +35,11 @@
   <include refid="search"></include>
   </select>
   
+  <!-- 동일: select bno from board order by bno desc limit 0 -->
+  <select id="selectBno" resultType="int">
+  select max(bno) from board 
+  </select>
+  
   <!-- select * from board where isDel = 'N' and (..or ..or ..) -->
   <sql id="search">
   <if test="type != null">

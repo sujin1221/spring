@@ -1,18 +1,29 @@
 package com.ezen.www.controller;
 
+import java.util.List;
+
 import javax.inject.Inject;
 import javax.websocket.server.PathParam;
 
+import org.springframework.http.MediaType;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.ezen.www.domain.BoardDTO;
 import com.ezen.www.domain.BoardVO;
+import com.ezen.www.domain.FileVO;
 import com.ezen.www.domain.PagingVO;
+import com.ezen.www.handler.FileHandler;
 import com.ezen.www.handler.PagingHandler;
 import com.ezen.www.service.BoardService;
 
@@ -25,18 +36,40 @@ public class BoardController {
 	@Inject
 	private BoardService bsv;
 	
+	@Inject
+	private FileHandler fhd;
+	
 	//경로와 리턴의 값이 같을 경우 생략 가능
 	// /board/register => /board/register
 	@GetMapping("/register")
 	public void register() {}
-	@PostMapping("/register")
+	
+	@PostMapping("/register")	
 	//@RequestParam("name") String name => 파라미터 보낼때는 이런식으로 
-	public String register(BoardVO bvo) {
+	//required: 필수 여부, false를 주면 파라미터가 없어도 예외발생 x
+	public String register(BoardVO bvo, @RequestParam(name="files", required = false)MultipartFile[] files) {
 		log.info(">>> bvo >> {} ", bvo);
-		int isOk = bsv.register(bvo);
-		//리스트로 갔다가 리스트 로직 함 타고 다시 ㄱㄱ
-		return "redirect:/board/list"; //목적지 경로
-	} 
+		log.info(">>> files >> {}",files.toString());
+				
+	//파일 핸들러 처리
+	List<FileVO> flist = null;
+	
+	//파일이 있을 경우에만 fhd 호출
+	if(files[0].getSize() > 0) {
+		//0번지에 값이 있다면
+		flist = fhd.uploadFiles(files); 
+		log.info(">>> flist >> {} ", flist);
+	} else {
+		log.info("file null");
+	}
+	BoardDTO bdto = new BoardDTO(bvo, flist);
+	
+	int isOk = bsv.register(bdto);
+	log.info("board register >>> {} "+(isOk > 0 ? "ok":"fail"));
+	//리스트로 갔다가 리스트 로직 함 타고 다시 ㄱㄱ
+	return "redirect:/board/list"; //목적지 경로
+	}
+	
 	// /board/list => /board/list
 	//void 처리해도 상관없음!
 	@GetMapping("/list")
@@ -58,7 +91,9 @@ public class BoardController {
 	@GetMapping({"/detail","/modify"})
 	public void detail(Model m, @RequestParam("bno") int bno) {
 		log.info(">>> bno >>> {} "+bno);
-		m.addAttribute("bvo", bsv.getDetail(bno));
+		//파일 내용도 포함해서 같이 보내기
+		
+		m.addAttribute("boardDTO", bsv.getDetail(bno));
 		bsv.read_count(bno);
 	}
 	@PostMapping("/modify") 
@@ -78,5 +113,13 @@ public class BoardController {
 	//일회성으로 데이터를 보낼때 사용 => addFlashAttribute
 	re.addFlashAttribute("isDel",isOk);
 	return "redirect:/board/list"; 
+	}	
+	
+	@DeleteMapping(value="/{uuid}", produces = MediaType.TEXT_PLAIN_VALUE)
+	public ResponseEntity<String> delete(@PathVariable("uuid") String uuid) {
+		log.info("delete file id >>> {} ", uuid);
+		int isOk = bsv.remove(uuid);
+		return isOk > 0 ? new ResponseEntity<String>("1",HttpStatus.OK) :
+			new ResponseEntity<String>("0", HttpStatus.INTERNAL_SERVER_ERROR);
 	}	
 }
