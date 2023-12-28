@@ -5,7 +5,7 @@
 <jsp:include page="../layout/header.jsp"></jsp:include>
 <h3>Board Modify Page</h3>
 <c:set value="${boardDTO.bvo }" var="bvo" />
-<form action="/board/modify" method="post">
+<form action="/board/modify" method="post" enctype="multipart/form-data">
 
 <div class="container-md">
 <div class="mb-3">
@@ -14,20 +14,20 @@
 </div>
 <div class="mb-3">
   <label for="title" class="form-label">Title</label>
-  <input type="text" name = "title" class="form-control" id="title" value="${bvo.title}" placeholder="writer">
+  <input type="text" name ="title" class="form-control" id="title" value="${bvo.title}" placeholder="writer">
 </div>
 <div class="mb-3">
   <label for="writer" class="form-label">Writer</label>
-  <input type="text" name = "writer" class="form-control" id="writer" value="${bvo.writer}" readonly="readonly">
+  <input type="text" name ="writer" class="form-control" id="writer" value="${bvo.writer}" readonly="readonly">
 </div>
 <div class="mb-3">
   <label for="reg_date" class="form-label">reg_date</label>
   <span class="badge text-bg-primary">${bvo.read_count}</span>
-  <input type="text" name = "reg_date" class="form-control" id="writer" value="${bvo.reg_date}" readonly="readonly">
+  <input type="text" name ="reg_date" class="form-control" id="writer" value="${bvo.reg_date}" readonly="readonly">
 </div>
 <div class="mb-3">
   <label for="content" class="form-label">Content</label>
-  <textarea class="form-control" name= "content" id="content" rows="3"></textarea>
+  <textarea class="form-control" name="content" id="content" rows="3">${bvo.content} </textarea>
 </div>
 </div>
 
@@ -37,10 +37,7 @@
 <ul class="list-group">
 <!-- 파일의 개수만큼 li를 추가하여 파일을 표시 -->
 <!-- 타입이 1인 경우만 표시 -->
-<!-- 
-li -> div -> img 표시 
-div -> 파일명, 작성일, span size
--->
+
 <!-- 파일 리스트 중 하나만 가져와서 fvo로 저장 -->
 <c:forEach items="${flist }" var="fvo">
 	<li class="list-group-item">
@@ -63,17 +60,17 @@ div -> 파일명, 작성일, span size
 		${fvo.reg_date }
 		</div>
 			<span class="badge text-bg-warning">${fvo.file_size }Byte</span>
-		<button type="button" data-uuid = "${fvo.uuid }" class="file-x">X</button>
+		<button type="button" data-uuid ="${fvo.uuid }" class="file-x">X</button>
 			</li>
 		</c:forEach>
 	</ul>
 </div>
 <!-- 수정 파일 등록 라인 -->
 <!-- file 입력 라인 추가 -->
-<!-- multiple="multiple": 여러개의 파일 업로드 가능하도록 -->
+
 <div class="mb-3">
   <label for="file" class="form-label">files...</label>
-  <input type="file" name = "files" class="form-control" id="file" multiple="multiple" style="display: none">
+  <input type="file" name ="files" class="form-control" id="file" multiple="multiple" style="display: none">
 <button type="button" class="btn btn-primary" id="trigger">FileUpload</button>
 </div>
 <!-- 파일 목록 표시라인 -->
@@ -82,7 +79,6 @@ div -> 파일명, 작성일, span size
 </div>
 
 <button type="submit" class="btn btn-primary" id="regBtn">등록</button>
-<button type="submit" class="btn btn-success">modify</button>
 <a href="/board/list"><button type="button" class="btn btn-primary">List</button></a>
 </form> 
 

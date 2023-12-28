@@ -59,12 +59,17 @@ public class BoardController {
 		//0번지에 값이 있다면
 		flist = fhd.uploadFiles(files); 
 		log.info(">>> flist >> {} ", flist);
+		//파일 등록 전 파일 개수를 bvo fileCount에 직접 set => db x
+		//bvo.setFileCount(flist.size()); 
 	} else {
 		log.info("file null");
 	}
 	BoardDTO bdto = new BoardDTO(bvo, flist);
 	
+	//보드와 파일이 등록이 완료되는 시점
 	int isOk = bsv.register(bdto);
+	
+	
 	log.info("board register >>> {} "+(isOk > 0 ? "ok":"fail"));
 	//리스트로 갔다가 리스트 로직 함 타고 다시 ㄱㄱ
 	return "redirect:/board/list"; //목적지 경로
@@ -97,13 +102,21 @@ public class BoardController {
 		bsv.read_count(bno);
 	}
 	@PostMapping("/modify") 
-	public String modify(BoardVO bvo) {
+	public String modify(BoardVO bvo, 
+			@RequestParam(name="files", required = false)MultipartFile[] files) {
 	 log.info(">>>>> bvo >>> {} "+bvo);	
+	 List<FileVO> flist = null;
+	 if(files[0].getSize() > 0) {
+		 //파일이 존재한다면
+		 flist = fhd.uploadFiles(files);		 
+	 }
+	 BoardDTO boardDTO = new BoardDTO(bvo, flist);	 
 	//update
-	bsv.update(bvo);
+	bsv.update(boardDTO);
 	//m.addAttribute("bno",bvo.getBno()); => model 객체 가져와서
 	 return "redirect:/board/detail?bno="+bvo.getBno(); //bno가 필요함	 
 	}
+	
 	@GetMapping("/remove") //변수명보다...이게 중요한거임...맞게 잘 적어줘야함...
 	public String remove(@RequestParam("bno") int bno, RedirectAttributes re) {
 		log.info(">>>>> bno >> {} "+bno);
@@ -115,7 +128,8 @@ public class BoardController {
 	return "redirect:/board/list"; 
 	}	
 	
-	@DeleteMapping(value="/{uuid}", produces = MediaType.TEXT_PLAIN_VALUE)
+	//첨부파일 삭제
+	@DeleteMapping(value="/file/{uuid}", produces = MediaType.TEXT_PLAIN_VALUE)
 	public ResponseEntity<String> delete(@PathVariable("uuid") String uuid) {
 		log.info("delete file id >>> {} ", uuid);
 		int isOk = bsv.remove(uuid);

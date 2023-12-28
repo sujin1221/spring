@@ -54,3 +54,30 @@ bno int,
 file_size int,
 reg_date datetime default now(),
 primary key(uuid));
+
+--2023/12/28
+board 테이블에 댓글수, 파일개수 필드 추가
+commentCount, fileCount
+int default 0
+
+ALTER TABLE board
+ADD COLUMN commentCount INT DEFAULT 0,
+ADD COLUMN fileCount INT DEFAULT 0;
+
+bno 가 일치하는 comment의 count를 세어서 commentCount에 update => mapper
+
+삭제 구문 (외래키 설정해야해서...)
+delete from board;
+delete from comment;
+delete from member;
+delete from file;
+
+외래키 설정 구문
+alter table comment add foreign key(bno) references board(bno) [옵션];
+옵션=> 
+on delete cascade / on update cascade 
+
+alter table comment add foreign key(bno) references board(bno) on delete cascade;
+alter table file add foreign key(bno) references board(bno) on delete cascade;
+alter table board add foreign key(writer) references member(id) on delete cascade;
+

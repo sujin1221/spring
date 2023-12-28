@@ -3,6 +3,8 @@
   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
   <mapper namespace="com.ezen.www.repository.BoardDAO">
+  
+  <!-- 방법2: fileCount를 insert 구문에 추가해주면 됨 -->
   <insert id="insert" parameterType="com.ezen.www.domain.BoardVO">
   insert into board(title, writer, content) values(#{title}, #{writer}, #{content})
   </insert>
@@ -24,7 +26,7 @@
   <update id="update">
   update board set title = #{title}, content = #{content}, reg_date = now(), read_count = read_count-2 where bno = #{bno}
   </update>
-  
+   
   <!-- delete from board where bno = #{bno} -->
   <update id="delete">
   update board set isDel = "Y" where bno = #{bno}
@@ -34,12 +36,22 @@
   select count(bno) from board where isDel = 'N'
   <include refid="search"></include>
   </select>
-  
+
   <!-- 동일: select bno from board order by bno desc limit 0 -->
   <select id="selectBno" resultType="int">
   select max(bno) from board 
   </select>
   
+  <update id="updateCommentCount">
+   update board b set commentCount = 
+  (select count(bno) from comment where bno = b.bno);
+  </update>
+  
+  <update id="updateFileCount">
+     update board b set fileCount = 
+  (select count(bno) from file where bno = b.bno);
+  </update>
+ 
   <!-- select * from board where isDel = 'N' and (..or ..or ..) -->
   <sql id="search">
   <if test="type != null">

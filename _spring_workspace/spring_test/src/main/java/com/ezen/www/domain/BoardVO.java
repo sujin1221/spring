@@ -12,7 +12,6 @@ import lombok.ToString;
 @Setter
 @Getter
 public class BoardVO {
-
 	private int bno;
 	private String title;
 	private String writer;
@@ -20,4 +19,6 @@ public class BoardVO {
 	private String isDel;
 	private String reg_date;
 	private int read_count;
+	private int commentCount;
+	private int fileCount;
 }

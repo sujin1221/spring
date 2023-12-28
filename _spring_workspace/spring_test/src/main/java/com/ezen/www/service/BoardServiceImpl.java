@@ -52,6 +52,14 @@ public class BoardServiceImpl implements BoardService{
 
 	@Override
 	public List<BoardVO> getList(PagingVO pgvo) {
+		int isOk = bdao.updateCommentCount();
+		if(isOk == 0) {
+			log.info("updateCommentCount error");
+		}
+		int isOkf = bdao.updateFileCount();
+		if(isOk == 0) {
+			log.info("updateFileCount error");
+		}
 		return bdao.selectList(pgvo);
 	}
 
@@ -70,8 +78,19 @@ public class BoardServiceImpl implements BoardService{
 	}
 
 	@Override
-	public void update(BoardVO bvo) {
-		bdao.update(bvo);		
+	public void update(BoardDTO bdto) {
+		int isOk = bdao.update(bdto.getBvo()); //보드 내용 수정		
+		if(bdto.getFlist() == null) {
+			isOk *= 1; //이미 처리된것처럼...
+		} else {
+			if(isOk > 0 && bdto.getFlist().size() > 0) {
+				int bno = bdto.getBvo().getBno();
+				for(FileVO fvo : bdto.getFlist()) {
+					fvo.setBno(bno);
+					isOk *= fdao.insertFile(fvo);
+				}
+			}
+		}
 	}
 
 	@Override
@@ -87,7 +106,7 @@ public class BoardServiceImpl implements BoardService{
 
 	@Override
 	public int remove(String uuid) {
-		// TODO Auto-generated method stub
+		
 		return fdao.delete(uuid);
 	}
 

@@ -28,7 +28,7 @@
 </div>
 <div class="mb-3">
   <label for="content" class="form-label">Content</label>
-  <textarea class="form-control" name= "content" id="content" rows="3" readonly="readonly"></textarea>
+  <textarea class="form-control" name= "content" id="content" rows="3" readonly="readonly">${bvo.content}</textarea>
 </div>
 </div>
 <!-- 파일 표시 라인 -->
@@ -67,7 +67,6 @@ div -> 파일명, 작성일, span size
 		</c:forEach>
 	</ul>
 </div>
-
 
 <br>
 <a href="/board/list"><button type="button" class="btn btn-primary">List</button></a>
