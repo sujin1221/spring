@@ -75,25 +75,41 @@ div -> 파일명, 작성일, span size
 
 <!-- 댓글 등록 라인 -->
 <div class="input-group mb-3">
-<span id="cmtWriter" class="input-group-text">${ses.id }</span>
+<span id="cmtWriter" class="input-group-text">${bvo.writer}</span>
   <input type="text" id="cmtText" class="form-control" placeholder="Add Comment" aria-label="Recipient's username" aria-describedby="basic-addon2">
-  <button type="button"  id="cmtAddBtn"  class="btn btn-success">등록</button>
+  <button type="button"  id="cmtPostBtn"  class="btn btn-success">등록</button>
 </div>
 
 <!-- 댓글 표시 라인 -->
-<div class="accordion" id="accordionExample">
+<ul class="list-group list-group-flush" id="cmtListArea">
+  <li class="list-group-item">
+   <div class="mb-3">
+      <div class="fw-bold">Writer</div>
+      content
+   </div>
+   <span class="badge text-bg-primary">modAt</span>
+  </li>
+</ul>
 
-  <div class="accordion-item">
-    <h2 class="accordion-header">
-      <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
-        cno, writer, reg_date
-      </button>
-    </h2>
-    <div id="collapseOne" class="accordion-collapse collapse show" data-bs-parent="#accordionExample">
-      <div class="accordion-body">
-        <strong>Add Comment...</strong>
-      </div>
-    </div>
+<!-- 댓글 더보기 버튼 -->
+  <div>
+    <button type="button" id="moreBtn" data-page="1" class="btn btn-success" style="visibility: hiden">More+</button>
   </div>
-  </div>
+  
+ <script> 
+  const isMod = `<c:out value = '${isMod}'/>`;
+  if(isMod == 1){
+  alert("게시글이 수정되었습니다.");
+  }
+</script>
+
+ <script type="text/javascript">
+ let bnoVal = `<c:out value="${bvo.bno}" />`;
+ console.log(bnoVal);
+ </script>
+  
+<script type="text/javascript" src="/resources/js/boardComment.js"></script>  
+<script type="text/javascript">
+spreadCommentList(bnoVal);
+</script>
 <jsp:include page="../layout/footer.jsp"></jsp:include>

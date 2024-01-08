@@ -5,28 +5,28 @@
 
 <div class="d-flex justify-content-center">
  <div class="container-md">
- 
  <br>
- <h3>Board List Page</h3>
+ <h3>글 목록</h3>
  <br>
  
- <!-- 검색 라인 -->
- <div class=".container-md">
+ <!-- search line -->
+  <div class=".container-md">
   <form action="/board/list" method="get">
   <div class="input-group mb-3">
+  <c:set value="${ph.pgvo.type}" var="typed"></c:set>
   <select name="type" class="form-select" id="search">
-  <option ${ph.pgvo.type == null ? 'selected' : ''}>Choose</option>
-  <option value="t" ${ph.pgvo.type eq 't' ? 'selected' : ''}>Title</option>
-  <option value="w" ${ph.pgvo.type eq 'w' ? 'selected' : ''}>Writer</option>
-  <option value="c" ${ph.pgvo.type eq 'c' ? 'selected' : ''}>Content</option>
-  <option value="tc" ${ph.pgvo.type eq 'tc' ? 'selected' : ''}>Title&Content</option>
-  <option value="tw" ${ph.pgvo.type eq 'tw' ? 'selected' : ''}>Title&Writer</option>
-  <option value="wc" ${ph.pgvo.type eq 'wc' ? 'selected' : ''}>Writer&Content</option>
-  <option value="twc" ${ph.pgvo.type eq 'twc' ? 'selected' : ''}>All</option>
+  <option ${typed eq null ? 'selected' : ''}>Choose</option>
+  <option value="t" ${typed eq 't' ? 'selected' : ''}>Title</option>
+  <option value="w" ${typed eq 'w' ? 'selected' : ''}>Writer</option>
+  <option value="c" ${typed eq 'c' ? 'selected' : ''}>Content</option>
+  <option value="tc" ${typed eq 'tc' ? 'selected' : ''}>Title&Content</option>
+  <option value="tw" ${typed eq 'tw' ? 'selected' : ''}>Title&Writer</option>
+  <option value="wc" ${typed eq 'wc' ? 'selected' : ''}>Writer&Content</option>
+  <option value="twc" ${typed eq 'twc' ? 'selected' : ''}>All</option>
   </select>
-  <input type="search" class="form-control me-2" value="${ph.pgvo.keyword}" name="keyword" placeholder="search">
   <input type="hidden" name="pageNo" value="1">
-  <input type="hidden" name="qty" value="10">  
+  <input type="hidden" name="qty" value="${ph.pgvo.qty}">  
+  <input type="search" class="form-control me-2" value="${ph.pgvo.keyword}" name="keyword" placeholder="search">
   
   <button type="submit" class="btn btn-primary position-relative">
   search
@@ -34,11 +34,11 @@
     ${ph.totalCount}
     <span class="visually-hidden">unread messages</span>
   </span>
-</button>
- 
+</button> 
   </div>
   </form>
  </div>
+
  <table class="table">
  <thead>
  <tr>
@@ -67,32 +67,25 @@
   </c:forEach>
   </tbody>
   </table>
-  <!-- 페이지네이션 
-    <nav aria-label="Page navigation example">
+   
+   <nav aria-label="Page navigation example">
   <ul class="pagination">
-  -->
-
-  <!-- 이전 
+  
   <c:if test="${ph.prev }">
     <li class="page-item">
-      <a class="page-link" href="/board/list?pageNo=${ph.startPage-1 }&qty=${ph.pgvo.qty}&type=${ph.pgvo.type}&keyword=${ph.pgvo.keyword}" aria-label="Previous">
+      <a class="page-link" href="/board/list?pageNo=${ph.startPage-1}&qty=${ph.pgvo.qty}&type=${ph.pgvo.type}&keyword=${ph.pgvo.keyword}" aria-label="Previous">
         <span aria-hidden="true">&laquo;</span>
       </a>
     </li>
     </c:if>
-  -->
-  
-    
-    <!-- 페이지 번호  
+     
     <c:forEach begin="${ph.startPage}" end="${ph.endPage}" var="i">
-    <li class="page-item"><a class="page-link" href="/board/list?pageNo=${i }&qty=${ph.pgvo.qty}&type=${ph.pgvo.type}&keyword=${ph.pgvo.keyword}">${i}</a></li>
+    <li class="page-item"><a class="page-link" href="/board/list?pageNo=${i }&qty=${ph.pgvo.qty}&type=${ph.pgvo.type}&keyword=${ph.pgvo.keyword }">${i}</a></li>
     </c:forEach>
-    -->   
-       
-    <!-- 다음 
+          
     <c:if test="${ph.next }">
     <li class="page-item">
-      <a class="page-link" href="/board/list?pageNo=${ph.endPage+1 }&qty=${ph.pgvo.qty}&type=${ph.pgvo.type}&keyword=${ph.pgvo.keyword}" aria-label="Next">
+      <a class="page-link" href="/board/list?pageNo=${ph.endPage+1 }&qty=${ph.pgvo.qty}&type=${ph.pgvo.type}&keyword=${ph.pgvo.keyword }" aria-label="Next">
         <span aria-hidden="true">&raquo;</span>
       </a>
     </li>   
@@ -100,14 +93,15 @@
     <li class="page-item"><a class="page-link" href="/board/list">전체보기</a></li>
      </ul>
      </nav> 
-    -->   
-
+       
  </div>
  </div>
-<script>
-const isDel = `<c:out value = '${isDel}'/>`;
-if(isDel == 1){
-	alert("게시글이 삭제되었습니다.");
+ 
+ <script> 
+const isRe = `<c:out value = '${isRe}'/>`;
+if(isRe == 1){
+alert("게시글이 삭제되었습니다.");
 }
 </script>
+
 <jsp:include page="../layout/footer.jsp"></jsp:include>

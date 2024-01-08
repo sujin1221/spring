@@ -3,12 +3,13 @@ package com.myweb.www.repository;
 import java.util.List;
 
 import com.myweb.www.domain.BoardVO;
+import com.myweb.www.domain.PagingVO;
 
 public interface BoardDAO {
 
 	int insert(BoardVO bvo);
 
-	List<BoardVO> getList();
+	List<BoardVO> getList(PagingVO pgvo);
 
 	Object getDetail(int bno);
 
@@ -16,6 +17,8 @@ public interface BoardDAO {
 
 	int delete(int bno);
 
-	void modify(BoardVO bvo);
+	int modify(BoardVO bvo);
+
+	int getTotalCount(PagingVO pgvo);
 
 }

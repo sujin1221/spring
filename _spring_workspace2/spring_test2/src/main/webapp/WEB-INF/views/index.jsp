@@ -7,8 +7,11 @@
 <br>
 <P>  The time on the server is ${serverTime}. </P>
 
-<!-- 되는지 확인 
-<a href="/board/register"><button>register Board</button></a>
--->
+<script> 
+const isRg = `<c:out value = '${isRg}'/>`;
+if(isRg == 1){
+alert("게시글이 등록되었습니다!");
+}
+</script>
 
 <jsp:include page="./layout/footer.jsp"></jsp:include>

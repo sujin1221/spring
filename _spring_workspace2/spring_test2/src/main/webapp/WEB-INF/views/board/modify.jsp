@@ -34,4 +34,5 @@
 <a href="/board/list"><button type="button" class="btn btn-primary">목록</button></a>
 </form> 
 
+
 <jsp:include page="../layout/footer.jsp"></jsp:include>

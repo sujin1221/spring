@@ -10,8 +10,11 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.myweb.www.domain.BoardVO;
+import com.myweb.www.domain.PagingVO;
+import com.myweb.www.handler.PagingHandler;
 import com.myweb.www.service.BoardService;
 
 import lombok.RequiredArgsConstructor;
@@ -29,16 +32,24 @@ public class BoardController {
 	public void register() {}
 	
 	@PostMapping("/register")
-	public String insert(BoardVO bvo) {
+	public String insert(BoardVO bvo, Model m) {
 		log.info(">>> bvo >> {} ", bvo);
 		int isOk = bsv.insert(bvo);
+		m.addAttribute("isRg",isOk);
 		return "index";
 	}
 	
 	@GetMapping("/list")
-	public void list(Model m) {
-		List<BoardVO> list = bsv.getList();
+	public void list(Model m, PagingVO pgvo) {
+		log.info(">> pagingVO >>> {} ", pgvo);		
+		//페이징 처리
+		List<BoardVO> list = bsv.getList(pgvo);
+		//totalCount
+		int totalCount = bsv.getTotalCount(pgvo);
+		PagingHandler ph = new PagingHandler(pgvo, totalCount);
+		
 		m.addAttribute("list", list);
+	    m.addAttribute("ph", ph);
 	}
 	
 	@GetMapping({"/detail","/modify"})
@@ -49,19 +60,22 @@ public class BoardController {
 	}
 	
 	@GetMapping("/remove")
-	public String remove(@RequestParam("bno") int bno) {
+	public String remove(RedirectAttributes re, @RequestParam("bno") int bno) {
 		log.info(">>>>> remove bno >> {} "+bno);
 	int isOk = bsv.remove(bno);
 	log.info(isOk>0 ? "ok":"fail");
+	re.addFlashAttribute("isRe", isOk); //알림창
 	return "redirect:/board/list"; 
 	}
 	
 	@PostMapping("/modify")
-	public String modify(BoardVO bvo) {
+	public String modify(RedirectAttributes re, BoardVO bvo) {
 		log.info("modify bvo >>> {} ", bvo);		
-		bsv.modify(bvo);
+	    int isOk = bsv.modify(bvo);
+		re.addFlashAttribute("isMod",isOk); //알림창
 		return "redirect:/board/detail?bno="+bvo.getBno();
 	}
+	
 	
 	
 	
