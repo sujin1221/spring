@@ -6,12 +6,15 @@ import org.apache.ibatis.annotations.Param;
 
 import com.myweb.www.domain.CommentVO;
 import com.myweb.www.domain.PagingVO;
-import com.myweb.www.handler.PagingHandler;
 
 public interface CommentDAO {
 
 	int insert(CommentVO cvo);
 
-	List<PagingHandler> getList(@Param("bno") long bno, @Param("pgvo") PagingVO pgvo);
+	List<CommentVO> getList(@Param("bno") long bno, @Param("pgvo") PagingVO pgvo);
+
+	int selectOneBnoTotalCount(long bno);
+
+	int update(CommentVO cvo);
 
 }

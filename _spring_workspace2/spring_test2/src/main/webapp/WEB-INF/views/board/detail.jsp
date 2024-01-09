@@ -4,7 +4,7 @@
     <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
 <jsp:include page="../layout/header.jsp"></jsp:include>
 <br>
-<h3>Board detail Page</h3>
+<h3>Detail Page</h3>
 <br>
 <!-- c:set으로 앞에 붙여주기... -->
 <div class="container-md">
@@ -31,32 +31,34 @@
 </div>
 </div>
 
-<div class="mb-3">
-<ul class="list-group">
+
 <!-- 파일의 개수만큼 li를 추가하여 파일을 표시 -->
 <!-- 타입이 1인 경우만 표시 -->
 <!-- 
 li -> div -> img 표시 
 div -> 파일명, 작성일, span size
 -->
-<!-- 파일 리스트 중 하나만 가져와서 fvo로 저장 -->
+<!-- 파일 리스트 중 하나만 가져와서 fvo로 저장
+<div class="mb-3">
+<ul class="list-group"> 
 <c:forEach items="${flist }" var="fvo">
 	<li class="list-group-item">
 		<c:choose>
 			<c:when test="${fvo.file_type > 0 }">
 				<div>
-					<!-- /upload/save_dir/uuid_file_name -->
 					<img alt="" src="/upload/${fn:replace(fvo.save_dir, '\\', '/')}/${fvo.uuid}_th_${fvo.file_name}">
 				</div>
 			</c:when>
 			<c:otherwise>
 				<div>
-				<!-- 아이콘 같은 모양 하나 가져와서 넣기 -->
+				아이콘 같은 모양 하나 가져와서 넣기
 				</div>
 			</c:otherwise>
 			</c:choose>
 <div>
-<!-- div => 파일명, 작성일, span size -->
+-->
+
+<!-- div => 파일명, 작성일, span size 
 <div>${fvo.file_name }</div>
 		${fvo.reg_date }
 		</div>
@@ -65,6 +67,8 @@ div -> 파일명, 작성일, span size
 		</c:forEach>
 	</ul>
 </div>
+-->
+
 
 <br>
 <a href="/board/list"><button type="button" class="btn btn-primary">List</button></a>
@@ -96,12 +100,33 @@ div -> 파일명, 작성일, span size
     <button type="button" id="moreBtn" data-page="1" class="btn btn-success" style="visibility: hiden">More+</button>
   </div>
   
+  <!-- modal 창 -->
+  <div class="modal" id="myModal" tabindex="-1">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Writer</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <div class="input-group mb-3">
+        <input type="text" class="form-control" id="cmtTextMod">
+        <button type="button" class="btn btn-primary" id="cmtModBtn">Post</button>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+      </div>
+    </div> 
+  </div>
+ </div>
+ </div>
+  
  <script> 
   const isMod = `<c:out value = '${isMod}'/>`;
   if(isMod == 1){
   alert("게시글이 수정되었습니다.");
   }
-</script>
+ </script>
 
  <script type="text/javascript">
  let bnoVal = `<c:out value="${bvo.bno}" />`;

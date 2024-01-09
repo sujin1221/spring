@@ -48,6 +48,7 @@ public class BoardController {
 		int totalCount = bsv.getTotalCount(pgvo);
 		PagingHandler ph = new PagingHandler(pgvo, totalCount);
 		
+		
 		m.addAttribute("list", list);
 	    m.addAttribute("ph", ph);
 	}

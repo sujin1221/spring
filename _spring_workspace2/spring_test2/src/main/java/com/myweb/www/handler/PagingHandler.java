@@ -20,6 +20,7 @@ public class PagingHandler {
 	private int totalCount; //총 게시글 수 (매개변수로 전달)
 	private PagingVO pgvo; //이것도 매개변수로 전달받을거임
 	
+	//비동기는 무조건 한 객체로 묶어서 보내야함
 	private List<CommentVO> cmtList;
 	
 	//생성자에서 모든 값들이 설정되어야함
@@ -31,7 +32,7 @@ public class PagingHandler {
 		//1 2 3 4 ... 10 /10 나머지를 올려서(ceil) 1로 만들어줌 *10
 		this.endPage = (int)Math.ceil(pgvo.getPageNo()
 				/(double)pgvo.getQty())*pgvo.getQty();
-	this.startPage = endPage-9;
+	this.startPage = endPage - 9;
 	
 	//실제 endPage
 	//전체 글 수 / 한페이지에 표시되는 게시글 수 => 올림
@@ -44,7 +45,7 @@ public class PagingHandler {
 	this.next = this.endPage < realEndPage;
 	}
 	
-	public PagingHandler(PagingVO pgvo, int totalCount, List<CommentVO> list) {
+	public PagingHandler(PagingVO pgvo, int totalCount, List<CommentVO> cmtList) {
 		this(pgvo, totalCount);
 		this.cmtList = cmtList;
 	}	
