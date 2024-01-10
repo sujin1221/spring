@@ -131,8 +131,50 @@ document.addEventListener('click',(e)=>{
             //1 page
             spreadCommentList(bnoVal);
         })
+    } else if(e.target.classList.contains('del')){
+        let li = e.target.closest('li');
+        let cno = li.dataset.cno; 
+        let writer = li.dataset.writer;  
+        console.log(writer);    
+        deleteCommentToServer(cno, writer).then(result=>{
+          if(result == '1'){
+            alert("댓글 삭제 성공!");
+        } else if(result == '0'){
+            alert("작성자가 일치하지 않습니다.");
+        }
+        spreadCommentList(bnoVal);
     }
+        );
+    }   
 });
+
+// async function deleteComment(cno){
+//     try {
+//         const url = '/comment/'+cno;
+//         const config = {
+//             method: 'delete'
+//         };
+//         const resp = await fetch(url, config);
+//         const result = resp.text();
+//         return result;
+//     } catch (error) {
+//         console.log(error);
+//     }
+// }
+
+async function deleteCommentToServer(cno, writer){
+    try {
+        const url = '/comment/del/'+cno+"/"+writer;
+        const config = {
+            method: 'delete'
+        };
+        const resp = await fetch(url, config);
+        const result = await resp.text();
+        return result;
+    } catch (error) {
+        console.log(error);
+    }
+}
    
 async function editCommentToServer(cmtDataMod){
     try {

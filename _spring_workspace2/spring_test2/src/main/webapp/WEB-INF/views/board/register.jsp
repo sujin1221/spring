@@ -3,7 +3,7 @@
 <%@ taglib uri = "http://java.sun.com/jsp/jstl/core" prefix="c" %>
 
 <jsp:include page = "../layout/header.jsp"></jsp:include>
-<form action="/board/register" method="post">
+<form action="/board/register" method="post" enctype="Multipart/form-data">
 <br>
 <h3>ദ്ദി=´∀｀) 글을 작성해봅시당~!</h3>
 <br>
@@ -20,20 +20,21 @@
   <textarea class="form-control" name= "content" id="content" rows="3"></textarea>
 </div>
 
-<!-- file 입력 라인 추가 -->
-<!-- multiple="multiple": 여러개의 파일 업로드 가능하도록 
+<!-- 파일등록 -->
 <div class="mb-3">
-  <label for="file" class="form-label">files...</label>
-  <input type="file" name = "files" class="form-control" id="file" multiple="multiple" style="display: none">
-<button type="button" class="btn btn-primary" id="trigger">FileUpload</button>
+  <input type="file" name = "files" class="form-control" id="files" multiple="multiple" style="display: none">
+<!-- 트리거 사용을 위해.. -->
+<button type="button" class="btn btn-primary" id="trigger">File Upload</button>
 </div>
--->
+<!-- 첨부파일 -->
+<div class="mb-3" id="fileZone">
 
-<!-- 파일 목록 표시라인 
-<div class="mb-3" id="fileZone"></div>
--->
+</div>
+
 <br>
-<button type="submit" class="btn btn-primary">등록</button>
+<button type="submit" class="btn btn-primary" id="regBtn">등록</button>
 </form>
+
+<script src="/resources/js/boardRegister.js"></script>
 </body>
 </html>
