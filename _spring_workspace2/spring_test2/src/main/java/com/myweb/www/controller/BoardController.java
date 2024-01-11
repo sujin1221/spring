@@ -4,9 +4,14 @@ package com.myweb.www.controller;
 
 import java.util.List;
 
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -61,8 +66,6 @@ public class BoardController {
 		//totalCount
 		int totalCount = bsv.getTotalCount(pgvo);
 		PagingHandler ph = new PagingHandler(pgvo, totalCount);
-		
-		
 		m.addAttribute("list", list);
 	    m.addAttribute("ph", ph);
 	}
@@ -70,7 +73,7 @@ public class BoardController {
 	@GetMapping({"/detail","/modify"})
 	public void detail(Model m, @RequestParam("bno") int bno) {
 		 log.info(">>>>> detail bno >> {} " + bno);
-		m.addAttribute("bvo", bsv.getDetail(bno));	
+		m.addAttribute("bdto", bsv.getDetail(bno));	
 		bsv.reatCount(bno); //조회수
 	}
 	
@@ -84,17 +87,27 @@ public class BoardController {
 	}
 	
 	@PostMapping("/modify")
-	public String modify(RedirectAttributes re, BoardVO bvo) {
-		log.info("modify bvo >>> {} ", bvo);		
-	    int isOk = bsv.modify(bvo);
+	public String modify(RedirectAttributes re, BoardVO bvo
+			, @RequestParam(name="files", required = false) MultipartFile[] files) {
+		log.info("modify bvo >>> {} ", bvo);
+		List<FileVO> flist = null;
+		if(files[0].getSize() > 0) {
+			flist = fh.uploadFiles(files);
+		}
+		BoardDTO bdto = new BoardDTO(bvo, flist);
+	    int isOk = bsv.modify(bdto);
 		re.addFlashAttribute("isMod",isOk); //알림창
 		return "redirect:/board/detail?bno="+bvo.getBno();
 	}
 	
-	
-	
-	
-	
+	//파일삭제
+	@DeleteMapping(value="/file/{uuid}", produces = MediaType.TEXT_PLAIN_VALUE)
+	public ResponseEntity<String> removeFile(@PathVariable("uuid") String uuid){
+		log.info(">> uuid >>> {} ", uuid);
+		int isOk = bsv.removeFile(uuid);
+		return isOk > 0 ? new ResponseEntity<String>("1",HttpStatus.OK) :
+			new ResponseEntity<String>("0", HttpStatus.INTERNAL_SERVER_ERROR);
+	}
 	
 	
 }

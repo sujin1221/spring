@@ -46,13 +46,19 @@ public class BoardServiceImpl implements BoardService{
 	@Override
 	public List<BoardVO> getList(PagingVO pgvo) {
 		log.info("getList service in >>> ");
+		bdao.updateCommentCount(); //qty
+		bdao.updateFileCount();
 		return bdao.getList(pgvo);
 	}
 
+	@Transactional
 	@Override
-	public Object getDetail(int bno) {
+	public BoardDTO getDetail(int bno) {
 		log.info("getDetail service in >>> ");
-		return bdao.getDetail(bno);
+		BoardVO bvo = bdao.getDetail(bno);
+		List<FileVO> flist = fdao.getFileList(bno);
+		BoardDTO bdto = new BoardDTO(bvo, flist);
+		return bdto;
 	}
 
 	@Override
@@ -66,18 +72,35 @@ public class BoardServiceImpl implements BoardService{
 		return bdao.delete(bno);
 	}
 
+	@Transactional
 	@Override
-	public int modify(BoardVO bvo) {
-		log.info("modify service in >>> ");
-		 return bdao.modify(bvo);		
+	public int modify(BoardDTO bdto) {
+		int isOk = bdao.modify(bdto.getBvo());
+		if(bdto.getFlist() == null) {
+			isOk *= 1;
+		} else {
+			if(isOk > 0 && bdto.getFlist().size() > 0) {
+				long bno = bdto.getBvo().getBno();
+				for(FileVO fvo : bdto.getFlist()) {
+					fvo.setBno(bno);
+					isOk *= fdao.insertFile(fvo); 
+				}
+			}
+		}
+	return isOk;
 	}
 
-
-	
 	@Override
 	public int getTotalCount(PagingVO pgvo) {
 		log.info("getTotalCount service in >>> ");
 		 return bdao.getTotalCount(pgvo);		
 	}
-		
+
+	@Override
+	public int removeFile(String uuid) {
+		log.info("removeFile service in >>> ");
+		return fdao.removeFile(uuid);
+	}
+
+
 }

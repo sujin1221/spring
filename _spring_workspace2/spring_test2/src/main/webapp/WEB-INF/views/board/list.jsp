@@ -45,11 +45,10 @@
       <th scope="col">#</th>
       <th scope="col">title</th>
       <th scope="col">writer</th>
-      <th scope="col">content</th>
-      <th scope="col">regDate</th>
       <th scope="col">readCount</th>
       <th scope="col">cmtQty</th>
       <th scope="col">hasFile</th>
+      <th scope="col">regDate</th>
     </tr>
  </thead>
   <tbody>
@@ -58,19 +57,17 @@
   <th scope="row">${bvo.bno}</th>
   <td><a href="/board/detail?bno=${bvo.bno}">${bvo.title}</a></td>
   <td>${bvo.writer}</td>
-  <td>${bvo.content}</td>
-  <td>${bvo.regDate}</td>
   <td>${bvo.readCount}</td>
   <td>${bvo.cmtQty}</td>
   <td>${bvo.hasFile}</td>
+  <td>${bvo.regDate}</td>
   </tr>
   </c:forEach>
   </tbody>
   </table>
    
    <nav aria-label="Page navigation example">
-  <ul class="pagination">
-  
+  <ul class="pagination"> 
   <c:if test="${ph.prev }">
     <li class="page-item">
       <a class="page-link" href="/board/list?pageNo=${ph.startPage-1}&qty=${ph.pgvo.qty}&type=${ph.pgvo.type}&keyword=${ph.pgvo.keyword}" aria-label="Previous">
@@ -96,12 +93,12 @@
        
  </div>
  </div>
- 
- <script> 
-const isRe = `<c:out value = '${isRe}'/>`;
-if(isRe == 1){
-alert("게시글이 삭제되었습니다.");
-}
+
+<script>
+	const isRe = `<c:out value = '${isRe}'/>`;
+	if (isRe == 1) {
+		alert("게시글이 삭제되었습니다.");
+	}
 </script>
 
 <jsp:include page="../layout/footer.jsp"></jsp:include>

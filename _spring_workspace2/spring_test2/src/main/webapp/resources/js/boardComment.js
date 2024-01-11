@@ -57,9 +57,9 @@ async function getCommentListFromServer(bno, page){
 function spreadCommentList(bno, page=1){
     getCommentListFromServer(bno, page).then(result=>{
         console.log(result);
+        const ul = document.getElementById('cmtListArea');
         //댓글 모양대로 뿌리기
         if(result.cmtList.length > 0){
-            const ul = document.getElementById('cmtListArea');
             //댓글을 다시 뿌릴때 기존 값을 삭제하면 안됨
             //1page일 경우에만 삭제해야함
             if(page == 1){

@@ -12,14 +12,16 @@ public interface BoardService {
 
 	List<BoardVO> getList(PagingVO pgvo);
 
-	Object getDetail(int bno);
+	BoardDTO getDetail(int bno);
 
 	void reatCount(int bno);
 
 	int remove(int bno);
 
-	int modify(BoardVO bvo);
+	int modify(BoardDTO bdto);
 
 	int getTotalCount(PagingVO pgvo);
+
+	int removeFile(String uuid);
 
 }

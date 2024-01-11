@@ -7,6 +7,7 @@
 <h3>Detail Page</h3>
 <br>
 <!-- c:set으로 앞에 붙여주기... -->
+<c:set value="${bdto.bvo}" var="bvo"></c:set>
 <div class="container-md">
 <div class="mb-3">
   <label for="bno" class="form-label">Bno</label>
@@ -31,50 +32,45 @@
 </div>
 </div>
 
-
-<!-- 파일의 개수만큼 li를 추가하여 파일을 표시 -->
-<!-- 타입이 1인 경우만 표시 -->
-<!-- 
-li -> div -> img 표시 
-div -> 파일명, 작성일, span size
--->
-<!-- 파일 리스트 중 하나만 가져와서 fvo로 저장
-<div class="mb-3">
-<ul class="list-group"> 
-<c:forEach items="${flist }" var="fvo">
-	<li class="list-group-item">
-		<c:choose>
-			<c:when test="${fvo.file_type > 0 }">
-				<div>
-					<img alt="" src="/upload/${fn:replace(fvo.save_dir, '\\', '/')}/${fvo.uuid}_th_${fvo.file_name}">
-				</div>
-			</c:when>
-			<c:otherwise>
-				<div>
-				아이콘 같은 모양 하나 가져와서 넣기
-				</div>
-			</c:otherwise>
-			</c:choose>
-<div>
--->
-
-<!-- div => 파일명, 작성일, span size 
-<div>${fvo.file_name }</div>
-		${fvo.reg_date }
-		</div>
-			<span>${fvo.file_size }Byte</span>
-			</li>
-		</c:forEach>
+<!-- file line -->
+	<c:set value="${bdto.flist}" var="flist"></c:set>
+	<div class="mb-3">
+	<label for="f" class="form-label"></label>
+	<ul class="list-group list-group-flush">
+ <c:forEach items="${flist }" var="fvo">
+ 	<li class="list-group-item">
+ 		<c:choose>
+ 			<c:when test="${fvo.fileType == 1}">
+ 				<div>
+ 					<img alt="" src="/upload/${fvo.saveDir}/${fvo.uuid}_th_${fvo.fileName}">
+ 				</div>
+ 			</c:when>
+ 			<c:otherwise>
+ 			<div>
+ 			<!-- 일반 파일 표시할 아이콘, 다른이름으로 저장 -->
+ 			<a href="/upload/${fvo.saveDir}/${fvo.uuid}_${fvo.fileName}" download="${fvo.fileName}">
+ 			<svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="currentColor" class="bi bi-file-earmark-text" viewBox="0 0 16 16">
+  				<path d="M5.5 7a.5.5 0 0 0 0 1h5a.5.5 0 0 0 0-1h-5zM5 9.5a.5.5 0 0 1 .5-.5h5a.5.5 0 0 1 0 1h-5a.5.5 0 0 1-.5-.5zm0 2a.5.5 0 0 1 .5-.5h2a.5.5 0 0 1 0 1h-2a.5.5 0 0 1-.5-.5z"/>
+  				<path d="M9.5 0H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V4.5L9.5 0zm0 1v2A1.5 1.5 0 0 0 11 4.5h2V14a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1h5.5z"/>
+			</svg>
+			</a>
+ 			</div>
+ 			</c:otherwise>
+ 		</c:choose>
+ 		<div class="ms-2 me-auto">
+ 			<div class="fw-bold">${fvo.fileName}</div>
+ 			<span class="badge text-bg-warning">${fvo.fileSize}Byte</span>
+ 		</div>
+ 	</li>
+ </c:forEach>
 	</ul>
 </div>
--->
 
-
-<br>
-<a href="/board/list"><button type="button" class="btn btn-primary">List</button></a>
-<a href="/board/modify?bno=${bvo.bno}"><button type="button" class="btn btn-success">modify</button></a>
-<a href="/board/remove?bno=${bvo.bno}"><button type="button" class="btn btn-danger">delete</button></a>
-<br>
+	<br>
+		<a href="/board/list"><button type="button" class="btn btn-primary">List</button></a>
+		<a href="/board/modify?bno=${bvo.bno}"><button type="button" class="btn btn-success">modify</button></a>
+		<a href="/board/remove?bno=${bvo.bno}"><button type="button" class="btn btn-danger">delete</button></a>
+	<br>
 <hr>
 
 <!-- 댓글 등록 라인 -->
@@ -129,7 +125,7 @@ div -> 파일명, 작성일, span size
  </script>
 
  <script type="text/javascript">
- let bnoVal = `<c:out value="${bvo.bno}" />`;
+ let bnoVal = `<c:out value="${bdto.bvo.bno}" />`;
  console.log(bnoVal);
  </script>
   
