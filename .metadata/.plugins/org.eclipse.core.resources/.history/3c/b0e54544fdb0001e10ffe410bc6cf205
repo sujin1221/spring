@@ -1,0 +1,17 @@
+package com.myweb.www.security;
+
+public class MemberVO {
+	/*
+	 * email VARCHAR(100) NOT NULL,
+    pwd VARCHAR(1000) NOT NULL,
+    nick_name VARCHAR(100) NOT NULL,
+    reg_at DATETIME DEFAULT NOW(),
+    last_login DATETIME DEFAULT NULL,
+    PRIMARY KEY (email)
+	 * */
+	private String email;
+	private String pwd;
+	private String nick_name;
+	private String regAt;
+	private String lastLogin;
+}

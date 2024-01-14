@@ -1,0 +1,18 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+<jsp:include page = "../layout/header.jsp"></jsp:include>
+	<!-- email, pwd, nick_name -->
+<div class="container-md">
+<form action="/board/register" method="post" enctype="Multipart/form-data">
+
+<button type="submit" class="btn btn-primary" id="regBtn">회원가입</button>
+
+
+
+
+
+
+
+
+
+<jsp:include page = "../layout/footer.jsp"></jsp:include>
