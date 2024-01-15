@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib uri = "http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib uri="http://www.springframework.org/security/tags" prefix="sec" %>
 
 <jsp:include page = "../layout/header.jsp"></jsp:include>
 <form action="/board/register" method="post" enctype="Multipart/form-data">
@@ -11,10 +12,15 @@
   <label for="title" class="form-label">Title</label>
   <input type="text" name="title" class="form-control" id="title" placeholder="title">
 </div>
+
+<sec:authorize access="isAuthenticated()">
+<sec:authentication property="principal.mvo.email" var="authEmail"/>
 <div class="mb-3">
   <label for="writer" class="form-label">Writer</label>
-  <input type="text" name = "writer" class="form-control" id="writer" placeholder="writer">
+  <input type="text" name = "writer"  value="${authEmail}" class="form-control" id="writer" placeholder="writer">
 </div>
+</sec:authorize>
+
 <div class="mb-3">
   <label for="content" class="form-label">Content</label>
   <textarea class="form-control" name= "content" id="content" rows="3"></textarea>

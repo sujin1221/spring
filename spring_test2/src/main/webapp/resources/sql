@@ -65,3 +65,6 @@ CREATE TABLE auth_member (
 ALTER TABLE auth_member
 ADD CONSTRAINT fk_auth
 FOREIGN KEY (email) REFERENCES member(email);
+
+=== 2024/01/15 ===
+insert into auth_member values(1111@naver.com, 'ROLE_ADMIN');

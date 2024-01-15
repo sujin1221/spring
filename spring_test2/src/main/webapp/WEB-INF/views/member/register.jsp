@@ -3,6 +3,7 @@
 <jsp:include page = "../layout/header.jsp"></jsp:include>
 
 	<!-- email, pwd, nick_name -->
+	<!-- admin: 1111@naver.com으로 설정함 -->
 <form action="/member/register" method="post">
 <div class="container-md">
 <br>
@@ -14,12 +15,12 @@
 
 <div class="container-md">
 <label for="p" class="form-label">pwd</label>
-  <input type="password" name="password" class="form-control" id="p" placeholder="passWord">
+  <input type="password" name="pwd" class="form-control" id="p" placeholder="passWord">
 </div>
 
 <div class="container-md">
 <label for="n" class="form-label">nick_name</label>
-  <input type="text" name="nick_name" class="form-control" id="n" placeholder="nick_name">
+  <input type="text" name="nickName" class="form-control" id="n" placeholder="nick_name">
 </div>
 
 <br>
