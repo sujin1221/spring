@@ -1,5 +1,9 @@
 package com.myweb.www.service;
 
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.request;
+
+import java.util.List;
+
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -26,5 +30,36 @@ public class MemberServiceImpl implements MemberService{
 	public boolean updateLastLogin(String authEmail) {
 		
 		return mdao.updateLastLogin(authEmail) > 0 ? true : false;
+	}
+
+	@Override
+	public MemberVO detail(String email) {
+		MemberVO mvo = mdao.selectEmail(email);
+		mvo.setAuthList(mdao.selectAuths(email));
+		return mvo;
+	}
+
+	@Override
+	public List<MemberVO> list() {
+		
+		return mdao.list();
+	}
+
+	@Override
+	public int remove(String email) {
+			mdao.authremove(email);
+		return mdao.remove(email);
+	}
+
+	@Override
+	public void noPwdUpdate(MemberVO mvo) {
+		mdao.noPwdUpdat(mvo);
+		
+	}
+
+	@Override
+	public void pwdUpdate(MemberVO mvo) {
+		mdao.pwdUpdate(mvo);
+		
 	}
 }

@@ -1,0 +1,33 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+<%@ taglib uri = "http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<jsp:include page="../layout/header.jsp"></jsp:include>
+
+
+<table class="table">
+ <thead>
+ <tr>
+     <th scope="col">email</th>
+    </tr>
+ </thead>
+  <tbody>
+
+  <tr>
+  <td>${mvo.email}</td>
+  </tr>
+
+  </tbody>
+  </table>
+
+
+
+
+
+
+
+
+
+
+
+
+<jsp:include page="../layout/footer.jsp"></jsp:include>

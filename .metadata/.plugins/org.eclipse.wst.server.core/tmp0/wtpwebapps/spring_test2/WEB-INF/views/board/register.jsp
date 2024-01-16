@@ -13,13 +13,11 @@
   <input type="text" name="title" class="form-control" id="title" placeholder="title">
 </div>
 
-<sec:authorize access="isAuthenticated()">
 <sec:authentication property="principal.mvo.email" var="authEmail"/>
 <div class="mb-3">
   <label for="writer" class="form-label">Writer</label>
   <input type="text" name = "writer"  value="${authEmail}" class="form-control" id="writer" placeholder="writer">
 </div>
-</sec:authorize>
 
 <div class="mb-3">
   <label for="content" class="form-label">Content</label>
