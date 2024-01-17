@@ -26,5 +26,7 @@ public interface MemberDAO {
 	void noPwdUpdat(MemberVO mvo);
 
 	void pwdUpdate(MemberVO mvo);
+
+	MemberVO checkEmail(String email);
 	
 }

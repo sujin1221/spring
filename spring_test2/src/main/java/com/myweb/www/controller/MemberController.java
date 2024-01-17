@@ -6,6 +6,9 @@ import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -13,6 +16,7 @@ import org.springframework.security.web.authentication.logout.SecurityContextLog
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -63,6 +67,14 @@ public class MemberController {
 		m.addAttribute("mvo",msv.detail(email));
 	}
 	
+	//관리자용
+	@GetMapping("/detail")
+	public String detail(@RequestParam("email") String email, Model m) {
+		log.info(">>> email >>> {} ", email); //내 이메일 나오는지 확인
+		m.addAttribute("mvo", msv.detail(email));
+		return "/member/modify";
+	}
+	
 	@GetMapping("/list")
 	public String memberList(Model m) {
 		List<MemberVO> list = msv.list();
@@ -97,6 +109,16 @@ public class MemberController {
 		= SecurityContextHolder.getContext().getAuthentication();
 		new SecurityContextLogoutHandler()
 		.logout(request, response, authentication);
+	}
+	
+	@GetMapping(value="/check/{email}", produces = MediaType.TEXT_PLAIN_VALUE)
+	public ResponseEntity<String> emailCheck(@PathVariable("email") String email) {
+		MemberVO mvo = msv.checkEmail(email);
+		log.info(">> mvo >>> {} ",mvo);
+			if(mvo == null) {
+				return  new ResponseEntity<String>("0",HttpStatus.OK);				
+			}
+			return new ResponseEntity<String>("1",HttpStatus.INTERNAL_SERVER_ERROR);
 	}
 
 	

@@ -2,10 +2,12 @@
     pageEncoding="UTF-8"%>
     <%@ taglib uri = "http://java.sun.com/jsp/jstl/core" prefix="c" %>
     <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
+    <%@ taglib uri="http://www.springframework.org/security/tags" prefix="sec"%>
 <jsp:include page="../layout/header.jsp"></jsp:include>
 <br>
 <h3>Detail Page</h3>
 <br>
+
 <!-- c:set으로 앞에 붙여주기... -->
 <c:set value="${bdto.bvo}" var="bvo"></c:set>
 <div class="container-md">
@@ -17,6 +19,7 @@
   <label for="title" class="form-label">Title</label>
   <input type="text" name = "title" class="form-control" id="title" value="${bvo.title}" placeholder="writer" readonly="readonly">
 </div>
+
 <div class="mb-3">
   <label for="writer" class="form-label">Writer</label>
   <input type="text" name = "writer" class="form-control" id="writer" value="${bvo.writer}" readonly="readonly">
@@ -68,8 +71,13 @@
 
 	<br>
 		<a href="/board/list"><button type="button" class="btn btn-primary">List</button></a>
+		
+		<sec:authentication property="principal.mvo.email" var="authEmail"/>
+	<c:if test="${authEmail eq bvo.writer}">
 		<a href="/board/modify?bno=${bvo.bno}"><button type="button" class="btn btn-success">modify</button></a>
 		<a href="/board/remove?bno=${bvo.bno}"><button type="button" class="btn btn-danger">delete</button></a>
+	</c:if>
+		
 	<br>
 <hr>
 

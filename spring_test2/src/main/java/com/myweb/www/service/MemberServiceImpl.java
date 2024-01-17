@@ -62,4 +62,10 @@ public class MemberServiceImpl implements MemberService{
 		mdao.pwdUpdate(mvo);
 		
 	}
+
+	@Override
+	public MemberVO checkEmail(String email) {
+		// TODO Auto-generated method stub
+		return mdao.checkEmail(email);
+	}
 }

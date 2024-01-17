@@ -21,7 +21,7 @@ import com.zaxxer.hikari.HikariDataSource;
 @EnableScheduling
 @Configuration
 @MapperScan(basePackages = {"com.myweb.www.repository"})
-@ComponentScan(basePackages = {"com.myweb.www.service"})
+@ComponentScan(basePackages = {"com.myweb.www.service","com.myweb.www.exception"})
 public class RootConfig {
 	//db에 대한 설정 부분
 	//hikariCP 사용 / log4jdbc-log4j2 사용

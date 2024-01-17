@@ -49,8 +49,8 @@
 		update member set nick_name = #{nickName}, pwd = #{pwd} where email = #{email}
 	</update>
 	
-
-
-
+	<select id="checkEmail" resultType="com.myweb.www.security.MemberVO">
+		select * from member where email = #{email}
+	</select>
 
 </mapper>

@@ -20,4 +20,6 @@ public interface MemberService {
 
 	void pwdUpdate(MemberVO mvo);
 
+	MemberVO checkEmail(String email);
+
 }

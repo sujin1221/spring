@@ -14,7 +14,7 @@
 	<tbody>
 		<c:forEach items="${list}" var="mvo">
 			<tr>
-				<td><a href="/member/modify?email=${mvo.email}">${mvo.email}</a></td>
+				<td><a href="/member/detail?email=${mvo.email}">${mvo.email}</a></td>
 				<td>${mvo.nickName}</td>
 				<td>${mvo.pwd}</td>
 			</tr>
